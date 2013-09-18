@@ -1,0 +1,44 @@
+/* Custom CSS styling */
+
+h1 { /*for the top-left heading*/
+	font-size: 1.6em;
+	line-height: 1.2em;
+}
+
+h2 { /*for page subheading*/
+	font-size: 1.5em;
+}
+
+h3 { /*for photo headings*/
+	font-size: 1.3em;
+}
+
+.nav-list li a {
+	padding-right: 0px;
+}
+
+#map-canvas {
+	width: 100%;
+	height: 400px;
+	/*margin-top: 18px;*/
+}
+
+#photo-canvas img {
+	margin-bottom: 20px;
+}
+
+/* bootstrap: fix google map images */
+.gm-style img {
+  max-width: none;
+}
+.gm-style label { 
+  width: auto; display:inline; 
+} 
+/* end google map fix */
+
+#target {
+	width: 98%; /* it's a hack */
+	margin-top: 10px;
+	height: 25px;
+	font-size: 1.1em;
+}

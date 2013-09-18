@@ -1,0 +1,7 @@
+name: Ember Code example
+
+Key:
+7affe0fdd71de61db8101929c5a0a6e9
+
+Secret:
+ebfed1298e23d164

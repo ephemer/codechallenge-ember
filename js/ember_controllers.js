@@ -40,8 +40,8 @@ App.PhotosController = Ember.ArrayController.extend({ // this is a class, an ins
   },
 
   deletePhoto: function (id) {
-    var store = this.get('store');
-    store.filter('photo', id).deleteRecord();
+    // var store = this.get('store');
+    // store.filter('photo', id).deleteRecord();
     // store.commit();
   },
 
@@ -81,7 +81,7 @@ App.PhotosController = Ember.ArrayController.extend({ // this is a class, an ins
 
   searchPhotosGeo: function (location) {
     
-    this.clearAllPhotos(); // todo: actually clear them
+    // this.clearAllPhotos(); // todo: actually clear them
 
     var store = this.get('store');
     var that = this;

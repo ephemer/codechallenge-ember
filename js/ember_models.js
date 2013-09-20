@@ -3,10 +3,9 @@
 // clean up attribute code
 var attrStr = DS.attr('string');
 
-///// Map (title and coordinates) Model:
-
 App.Map = DS.Model.extend({
-	// contains placeTitle and placeCentre. placeCentre is made up of lat and long.
+	// Contains placeTitle and placeCentre.
+  // placeCentre is made up of latitude and longitude.
   placeTitle: attrStr,
   latitude: attrStr,
   longitude: attrStr,
@@ -17,11 +16,8 @@ App.Map = DS.Model.extend({
 
 });
 
-
-///// Photo Model:
-
 App.Photo = DS.Model.extend({
-  flickrID: attrStr, // we have a flickrID and a record ID
+  flickrID: attrStr, // we have a flickrID and a record ID (implied)
   secret: attrStr,
   server: attrStr,
   farm: attrStr,

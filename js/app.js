@@ -35,7 +35,7 @@ App.ApplicationRoute = Ember.Route.extend({
       id: 0,
       placeTitle: "WayMate HQ",
       latitude: "52.529967",
-      longitude: "13.40312199999994"
+      longitude: "13.403122"
     });
   }
 });

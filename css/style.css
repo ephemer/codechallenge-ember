@@ -20,7 +20,6 @@ h3 { /*for photo headings*/
 #map-canvas {
 	width: 100%;
 	height: 400px;
-	/*margin-top: 18px;*/
 }
 
 #photo-canvas img {
@@ -32,7 +31,8 @@ h3 { /*for photo headings*/
   max-width: none;
 }
 .gm-style label { 
-  width: auto; display:inline; 
+  width: auto;
+  display:inline; 
 } 
 /* end google map fix */
 

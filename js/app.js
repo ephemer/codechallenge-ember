@@ -34,8 +34,8 @@ App.ApplicationRoute = Ember.Route.extend({
     store.push('map', { // todo: only push this when no saved data exists
       id: 0,
       placeTitle: "WayMate HQ",
-      latitude: "52.52962385179964",
-      longitude: "13.398666858673096"
+      latitude: "52.529967",
+      longitude: "13.40312199999994"
     });
   }
 });

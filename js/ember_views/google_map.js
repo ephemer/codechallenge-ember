@@ -50,11 +50,15 @@ App.MapView = Ember.View.extend({
 
 		// Update controller when marker reaches new position
 	  google.maps.event.addListener(marker, "dragend", function() {
-	  	// var newTitle = "Latitude: " + this.position.pb + "\nLongitude: " + this.position.qb;
 	  	var newTitle = "User defined point";
 
 	  	controller.markerMoved(this, this.position, newTitle);
 			controller.updateSearch(''); // empty search box
+		});
+
+		google.maps.event.addListener(map, 'zoom_changed', function(){
+			var zoomLevel = map.getZoom();
+			// todo: set searchRadius based on zoom level
 		});
 
 	  google.maps.event.addListener(marker, 'click', function(event){

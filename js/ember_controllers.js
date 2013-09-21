@@ -28,6 +28,7 @@ App.MapController = Ember.ObjectController.extend({
 
 App.PhotosController = Ember.ArrayController.extend({ // this is a class, an instance is created on runtime (?)
   needs: ['map'], // we need the map data to find photos in the area
+  statusText: '',
   clearAllPhotos: function() {
 /*  // maybe not important if photos can be replaced
     var store = this.get('store');
@@ -39,18 +40,21 @@ App.PhotosController = Ember.ArrayController.extend({ // this is a class, an ins
     });*/
   },
 
-  deletePhoto: function (id) {
-    // var store = this.get('store');
-    // store.filter('photo', id).deleteRecord();
+  deletePhoto: function (store, id) {
+    // store.deleteRecord('photo', id);
     // store.commit();
   },
 
   // the search could later not be a geo-based search, so use generic success function
-  processPhotos: function (response) {
-    if (response.stat != "ok"){
-      // try again
-      Ember.Logger.warn("Error, retrying request.")
-      this.searchPhotosGeo();
+  processPhotos: function (response, searchRadius, errorMsg) {
+    if (response.stat == "timeout"){
+      this.set('statusText', "Timeout - trying again");
+      // run the same search as before
+      this.searchPhotosGeo(searchRadius);
+      return;
+    } else if (response.stat != "ok") {
+      this.set('statusText', errorMsg + ". Choose a different location and try again.")
+      // give up
       return;
     }
 
@@ -58,15 +62,25 @@ App.PhotosController = Ember.ArrayController.extend({ // this is a class, an ins
     var photos = new Ember.Set(response.photos.photo);    
     var that = this;
 
-    photos.forEach(function(photo, index) {
+    if (photos.length < 10) {
+      // there are not enough photos for this location
+      this.set('statusText', "Not enough photos within " + searchRadius + "km, expanding search radius to " + (searchRadius * 4) + "km...");
+      this.searchPhotosGeo(searchRadius * 4);
+      // with the next line commented, partial results will be shown (with old photos below)
+      // return;
+    } else { // enough photos found in this location, show them
+      this.set('statusText', '')
+    }
+
+    photos.forEach(function(photo, id) {
       // todo: remove old photos from store
       // and createRecord in their place
       // at the moment photo data doesn't persist
 
-      that.deletePhoto(index);
+      // that.deletePhoto(store, id);
 
       var newPhoto = store.push('photo', {
-        id: index,
+        id: id,
         flickrID: photo.id,
         secret: photo.secret,
         server: photo.server,
@@ -75,26 +89,24 @@ App.PhotosController = Ember.ArrayController.extend({ // this is a class, an ins
         latitude: photo.latitude,
         longitude: photo.longitude,
       });
+    }); // end forEach
 
-    });
   },
 
-  searchPhotosGeo: function (location) {
-    
+  searchPhotosGeo: function (searchRadius) {
     // this.clearAllPhotos(); // todo: actually clear them
 
     var store = this.get('store');
     var that = this;
 
     // get map location from model before doing ajax call
-    store.find('map',0).then(function(mapData){
+    store.find('map', 0).then(function(mapData){
       var myLatitude = mapData.get('latitude');
       var myLongitude = mapData.get('longitude');
 
       // todo: put ajax code into another function for clarity
       var flickrSearchAPI = 'http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=7affe0fdd71de61db8101929c5a0a6e9&format=json';
 
-      Ember.Logger.log('Starting ajax..');
       $.ajax(flickrSearchAPI, {
         context: that,
         dataType: 'jsonp',
@@ -104,20 +116,19 @@ App.PhotosController = Ember.ArrayController.extend({ // this is a class, an ins
           safe_search: 1,
           per_page: 10,
           extras: 'geo',
-          radius: 0.5,
+          radius: searchRadius,
           lat: myLatitude,
           lon: myLongitude,
         },
-        timeout: 6000,
+        timeout: 10000,
         success: function (result){
-          Ember.Logger.log('got ajax result');
-          that.processPhotos(result);
+          that.set('statusText', 'Got result');
+          that.processPhotos(result, searchRadius);
         },
-        error: function(resultObject,b,errorMsg) {
-          Ember.Logger.warn('Error: ' + errorMsg )
-          that.processPhotos(resultObject);
+        error: function(result,b,errorMsg) {
+          that.set('statusText', 'Error:' + errorMsg);
+          that.processPhotos(result, searchRadius, errorMsg);
           return;
-          // todo: more error handling here
         }
       }); // end ajax call
     }); // end .then()

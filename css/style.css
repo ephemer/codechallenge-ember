@@ -13,6 +13,33 @@ h3 { /*for photo headings*/
 	font-size: 1.3em;
 }
 
+.infoMsg span {
+	color: red;
+}
+
+.infoMsg i {
+	position: relative;
+	top: 0px;
+}
+
+.infoMsg:after {
+	position: relative;
+	content: '';
+	display: block;
+	height: 50px;
+	width: 50px;
+	padding: 10px;
+	top: 10px;
+	background: url(../img/ajax_loader.gif) no-repeat;
+	background-size: 50px 50px;
+
+}
+
+.loadImg {
+
+
+}
+
 .nav-list li a {
 	padding-right: 0px;
 }

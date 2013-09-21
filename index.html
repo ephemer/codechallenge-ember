@@ -43,6 +43,10 @@
   <script type="text/x-handlebars" data-template-name="photos">
     <h2> Flickr Photos </h2>
     <div id="photo-canvas">
+      {{! If there is a statusText, show it here }}
+      {{#if statusText}}
+        <h5 class="infoMsg"><i class="icon-info-sign"></i><span> {{statusText}} </span></h3>
+      {{/if}}
       {{#each}}
       <hr />
       <h3>{{title}}</h3>

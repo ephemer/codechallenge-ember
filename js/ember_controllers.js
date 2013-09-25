@@ -14,8 +14,8 @@ App.MapController = Ember.ObjectController.extend({
   },
   markerMoved: function(marker, newPos, newTitle) {
     Ember.Logger.log('Called markerMoved, newPos = ' + newPos + '\nnewTitle = ' + newTitle);
-    this.set('latitude', newPos.ob)
-    this.set('longitude', newPos.pb)
+    this.set('latitude', newPos.lat())
+    this.set('longitude', newPos.lng())
     this.set('placeTitle', newTitle)
     marker.setTitle(newTitle);
     marker.setPosition(newPos);
